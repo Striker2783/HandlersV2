@@ -41,7 +41,10 @@ end
 function module.load(self: PlayerC, data: any)
 	assert(data)
 	if data.Stats then
-		self.Stats:loadStats(data.Stats)
+		self.Stats:load(data.Stats)
+	end
+	if data.Money then
+		self.Money:load()
 	end
 end
 
@@ -68,6 +71,7 @@ end
 function module.toSave(self: PlayerC): Save
 	local save: Save = {
 		Stats = self.Stats:toSaveData(),
+		Money = self.Money:toSave()
 	}
 	return save
 end
@@ -82,13 +86,14 @@ end
 
 type Save = {
 	Stats: Stats.Save,
+	Money: Money.Save
 }
 export type PlayerCinit = {
 	Player: Player,
 	Char: CharacterC.Character?,
 	Stats: Stats.Stats,
 	Loaded: boolean,
-	Money: number
+	Money: Money.Money
 }
 export type PlayerC = PlayerCinit & typeof(setmetatable({}, module))
 

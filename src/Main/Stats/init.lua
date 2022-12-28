@@ -23,7 +23,7 @@ function module.toSaveData(self: Stats): Save
 	return save
 end
 
-function module.loadStats(self: Stats, data: Save?)
+function module.load(self: Stats, data: Save?)
 	assert(data)
 	if data.lvl then
 		self.Level:load(data.lvl)
