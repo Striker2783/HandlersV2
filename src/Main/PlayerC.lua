@@ -2,6 +2,7 @@ local DataStoreService = game:GetService("DataStoreService")
 local PlayerSaves = DataStoreService:GetDataStore("DSave1")
 local CharacterC = require(script.Parent.CharacterC)
 local Stats = require(script.Parent.Stats)
+local Money = require(script.Parent.Stats.Money)
 
 local module = {}
 module.__index = module
@@ -11,6 +12,7 @@ function module.new(Player: Player): PlayerC
 		Player = Player,
 		Stats = Stats.new(),
 		Loaded = false,
+		Money = Money.new()
 	}
 	setmetatable(self, module)
 
@@ -86,6 +88,7 @@ export type PlayerCinit = {
 	Char: CharacterC.Character?,
 	Stats: Stats.Stats,
 	Loaded: boolean,
+	Money: number
 }
 export type PlayerC = PlayerCinit & typeof(setmetatable({}, module))
 
