@@ -12,10 +12,10 @@ function module.new(Player: Player): PlayerC
 		Player = Player,
 		Stats = Stats.new(),
 		Loaded = false,
-		Money = Money.new()
+		Money = Money.new(),
 	}
 	setmetatable(self, module)
-
+	self:startUp()
 	return self
 end
 
@@ -49,7 +49,9 @@ function module.load(self: PlayerC, data: any)
 end
 
 function module.loadDSS(self: PlayerC)
-	local success, data = pcall(PlayerSaves:GetAsync(tostring(self.Player.UserId)))
+	local success, data = pcall(function()
+		PlayerSaves:GetAsync(tostring(self.Player.UserId))
+	end)
 	if success then
 		if data then
 			self:load(data)
@@ -71,7 +73,7 @@ end
 function module.toSave(self: PlayerC): Save
 	local save: Save = {
 		Stats = self.Stats:toSaveData(),
-		Money = self.Money:toSave()
+		Money = self.Money:toSave(),
 	}
 	return save
 end
@@ -86,14 +88,14 @@ end
 
 type Save = {
 	Stats: Stats.Save,
-	Money: Money.Save
+	Money: Money.Save,
 }
 export type PlayerCinit = {
 	Player: Player,
 	Char: CharacterC.Character?,
 	Stats: Stats.Stats,
 	Loaded: boolean,
-	Money: Money.Money
+	Money: Money.Money,
 }
 export type PlayerC = PlayerCinit & typeof(setmetatable({}, module))
 
